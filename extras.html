@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <base target="_top">
+
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Extras - MRuiz</title>
+
+  <style>
+    :root {
+      --blau: #2563eb;
+      --blau-fosc: #1e3a8a;
+      --negre: #0f172a;
+      --gris: #64748b;
+      --gris-clar: #f1f5f9;
+      --blanc: #ffffff;
+      --vora: #dbe3ef;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--gris-clar);
+      color: var(--negre);
+      line-height: 1.6;
+    }
+
+    header {
+      color: white;
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #1e3a8a
+        );
+      padding: 24px 7% 60px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      letter-spacing: 0.3px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      margin-left: 22px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      width: min(1180px, 92%);
+      margin: 0 auto;
+      padding: 50px 0 80px;
+    }
+
+    .titol-seccio {
+      margin-bottom: 35px;
+      text-align: center;
+    }
+
+    .titol-seccio h2 {
+      margin-bottom: 8px;
+      font-size: 2.1rem;
+    }
+
+    .titol-seccio p {
+      color: var(--gris);
+    }
+
+    .detalls-categoria {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .servei {
+      padding: 22px;
+      border: 1px solid var(--vora);
+      border-radius: 14px;
+      background: var(--blanc);
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    .servei h3 {
+      font-size: 1.35rem;
+      margin-bottom: 6px;
+    }
+
+    .servei p {
+      color: var(--gris);
+      margin-bottom: 10px;
+    }
+
+    .preu {
+      font-weight: bold;
+      color: var(--blau);
+      font-size: 1.1rem;
+    }
+
+    .boto-tornar {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 22px;
+      border-radius: 8px;
+      background: var(--blau);
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .boto-tornar:hover {
+      background: var(--blau-fosc);
+      transform: translateY(-2px);
+    }
+
+    footer {
+      padding: 25px;
+      background: var(--negre);
+      color: #cbd5e1;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 20px 5% 40px;
+      }
+
+      nav {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      nav a {
+        margin: 0 7px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header id="inici">
+    <nav>
+      <div class="logo">MRuiz</div>
+
+      <div>
+        <a href="Index.html">
+          Inicio
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="titol-seccio">
+      <h2>Extras</h2>
+      <p>
+        Contenido adicional: anime, tutoriales y más.
+      </p>
+    </section>
+
+    <div class="detalls-categoria">
+      <!-- Ver todo el Anime -->
+      <article class="servei">
+        <h3>Ver todo el Anime</h3>
+        <p>
+          Acceso a una amplia biblioteca de anime para ver en cualquier momento.
+        </p>
+        <div class="preu">2,50 €</div>
+      </article>
+
+      <!-- Tutorial Minecraft PC -->
+      <article class="servei">
+        <h3>Tutorial para instalar Minecraft en PC</h3>
+        <p>
+          Sí, TLauncher efectivamente tiene virus, en este tutorial te voy a enseñar a cómo tener minecraft hackeando un launcher de pago, uno que no se supone que sea gratis.
+        </p>
+        <div class="preu">2,50 €</div>
+      </article>
+
+      <!-- PelisExtraWeb -->
+      <article class="servei">
+        <h3>PelisExtraWeb</h3>
+        <p>
+          Películas y series online directamente desde el navegador, sin instalar nada.
+        </p>
+        <div class="preu">1,50 €</div>
+      </article>
+    </div>
+
+    <div style="text-align: center;">
+      <a
+        href="Index.html"
+        class="boto-tornar"
+      >
+        Volver al inicio
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 MRuiz · Ningún derecho reservado
+  </footer>
+</body>
+
+</html>
