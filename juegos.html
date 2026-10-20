@@ -5,10 +5,7 @@
   <base target="_top">
 
   <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Juegos - MRuiz</title>
 
@@ -42,12 +39,7 @@
 
     header {
       color: white;
-      background:
-        linear-gradient(
-          135deg,
-          #2563eb,
-          #1e3a8a
-        );
+      background: linear-gradient(135deg, #2563eb, #1e3a8a);
       padding: 24px 7% 60px;
     }
 
@@ -94,27 +86,58 @@
 
     .titol-seccio p {
       color: var(--gris);
+      margin-bottom: 20px;
+    }
+
+    /* Estils per al cercador */
+    .cercador-container {
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      text-align: center;
+    }
+
+    .cercador-input {
+      width: 100%;
+      padding: 14px 20px;
+      font-size: 1rem;
+      border: 2px solid var(--vora);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .cercador-input:focus {
+      border-color: var(--blau);
+      box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
     }
 
     .detalls-categoria {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 20px;
-      max-width: 800px;
-      margin: 0 auto;
+      margin: 0 auto 40px auto;
     }
 
     .servei {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       padding: 22px;
       border: 1px solid var(--vora);
       border-radius: 14px;
       background: var(--blanc);
       box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+      transition: transform 0.2s;
+    }
+
+    .servei:hover {
+      transform: translateY(-3px);
     }
 
     .servei h3 {
-      font-size: 1.35rem;
-      margin-bottom: 6px;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: var(--negre);
     }
 
     .servei p {
@@ -122,35 +145,31 @@
       margin-bottom: 10px;
     }
 
-    .preu {
-      font-weight: bold;
-      color: var(--blau);
-      font-size: 1.1rem;
-    }
-
-    .icona-img {
-      height: 80px;
-      width: auto;
-      object-fit: contain;
-      margin-bottom: 15px;
-      display: block;
-    }
-
     .boto-tornar {
       display: inline-block;
-      margin-top: 25px;
-      padding: 12px 22px;
+      margin-top: auto;
+      padding: 10px 18px;
       border-radius: 8px;
       background: var(--blau);
       color: white;
       text-decoration: none;
       font-weight: bold;
+      text-align: center;
       transition: background 0.2s, transform 0.2s;
     }
 
     .boto-tornar:hover {
       background: var(--blau-fosc);
       transform: translateY(-2px);
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--gris);
+      font-size: 1.1rem;
+      padding: 30px;
+      display: none;
     }
 
     footer {
@@ -181,7 +200,6 @@
   <header id="inici">
     <nav>
       <div class="logo">MRuiz</div>
-
       <div>
         <a href="index.html">Inicio</a>
       </div>
@@ -191,37 +209,1165 @@
   <main>
     <section class="titol-seccio">
       <h2>Juegos</h2>
-      <p>
-        Elige un juego y pulsa Jugar para empezar.
-      </p>
+      <p>Elige un juego y pulsa Jugar para empezar.</p>
+      
+      <!-- Input del cercador -->
+      <div class="cercador-container">
+        <input type="text" id="cercador" class="cercador-input" placeholder="Buscar juego..." onkeyup="filtrarJuegos()">
+      </div>
     </section>
 
-    <div class="detalls-categoria">
+    <div class="detalls-categoria" id="llista-jocs">
+      <!-- Jocs principals i destacats -->
       <article class="servei">
         <h3>Silver Shell (Mi juego)</h3>
-        <a href="https://github.com/MarcRuiz3801/Silver-Shell/releases/latest/download/Silver-Shell_setup.exe" class="boto-tornar" aria-label="">Descargar</a>
+        <a href="https://github.com/MarcRuiz3801/Silver-Shell/releases/latest/download/Silver-Shell_setup.exe" class="boto-tornar">Descargar</a>
       </article>
 
-    <div class="detalls-categoria">
       <article class="servei">
         <h3>Geometry Dash</h3>
-        <a href="gdash.html" class="boto-tornar" aria-label="Jugar a Geometry Dash">Jugar</a>
+        <a href="games/gdash.html" class="boto-tornar">Jugar</a>
       </article>
 
       <article class="servei">
         <h3>Minecraft (Se recomienda mouse)</h3>
-        <a href="minecraft.html" class="boto-tornar" aria-label="Jugar a Minecraft">Jugar</a>
+        <a href="games/minecraft.html" class="boto-tornar">Jugar</a>
       </article>
 
       <article class="servei">
         <h3>Click the mogger</h3>
-        <a href="click_the_mogger.html" class="boto-tornar" aria-label="Jugar a Grand Theft Auto V">Jugar</a>
+        <a href="games/click_the_mogger.html" class="boto-tornar">Jugar</a>
       </article>
 
       <article class="servei">
         <h3>Friday Night Funkin</h3>
-        <a href="fnf.html" class="boto-tornar" aria-label="Jugar a Friday Night Funkin">Jugar</a>
+        <a href="games/fnf.html" class="boto-tornar">Jugar</a>
       </article>
+
+      <!-- Jocs extrets de les imatges de la carpeta games -->
+      <article class="servei">
+        <h3>1v1.lol</h3>
+        <a href="games/1v1.lol.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>2048</h3>
+        <a href="games/2048.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>2048 Cupcakes</h3>
+        <a href="games/2048-cupcakes.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>10 Minutes Till Dawn</h3>
+        <a href="games/10-minutes-till-dawn.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>12 Mini Battles</h3>
+        <a href="games/12-mini-battles.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Minecraft 1.8</h3>
+        <a href="games/1.8.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Minecraft 1.8 WASM</h3>
+        <a href="games/1.8_WASM.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Minecraft 1.5</h3>
+        <a href="games/1.5.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Minecraft 1.12 WASM</h3>
+        <a href="games/1.12_WASM.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Minecraft 1.12</h3>
+        <a href="games/1.12.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>1 on 1 Soccer</h3>
+        <a href="games/1-on-1-soccer.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>1 on 1 Tennis</h3>
+        <a href="games/1-on-1-tennis.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bad Parenting</h3>
+        <a href="games/bad-parenting.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bacon May Die</h3>
+        <a href="games/bacon-may-die.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bad Ice Cream</h3>
+        <a href="games/bad-ice-cream.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bad Ice Cream 2</h3>
+        <a href="games/bad-ice-cream-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bad Ice Cream 3</h3>
+        <a href="games/bad-ice-cream-3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Awesome Tanks</h3>
+        <a href="games/awesome-tanks.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Awesome Tanks 2</h3>
+        <a href="games/awesome-tanks-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Backrooms</h3>
+        <a href="games/backrooms.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Angry Birds</h3>
+        <a href="games/angry-birds.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Angry Birds Showdown</h3>
+        <a href="games/angry-birds-showdown.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Angry Birds Space</h3>
+        <a href="games/angry-birds-space.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Ages of Conflict</h3>
+        <a href="games/ages-of-conflict.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Among Us</h3>
+        <a href="games/among-us.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Age of War</h3>
+        <a href="games/age-of-war.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Age of War 2</h3>
+        <a href="games/age-of-war-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>3D Flight Simulator</h3>
+        <a href="games/3D-flight-simulator.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>3D Free Kick</h3>
+        <a href="games/3d-free-kick.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>8 Ball Classic</h3>
+        <a href="games/8-ball-classic.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Agar.io Lite</h3>
+        <a href="games/agar-io-lite.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Minecraft Alpha 1.2.6</h3>
+        <a href="games/Alpha_1.2.6.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Minecraft Beta 1.3</h3>
+        <a href="games/Beta_1.3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Minecraft Indev</h3>
+        <a href="games/Indev.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bad Time Simulator</h3>
+        <a href="games/bad-time-simulator.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bad Piggies</h3>
+        <a href="games/bad-piggies.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Baldi's Basics</h3>
+        <a href="games/baldis-basics.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bank Robbery 2</h3>
+        <a href="games/bank-robbery-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bank Robbery 3</h3>
+        <a href="games/bank-robbery-3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Baseball Bros</h3>
+        <a href="games/baseball-bros.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Basket Bros</h3>
+        <a href="games/basket-bros.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Basket Random</h3>
+        <a href="games/basket-random.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Basketball Legends</h3>
+        <a href="games/basketball-legends.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Basketball Stars</h3>
+        <a href="games/basketball-stars.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Big Ice Tower Tiny Square</h3>
+        <a href="games/big-ice-tower-tiny-square.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Big Neon Tower Tiny Square</h3>
+        <a href="games/big-neon-tower-tiny-square.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Big Tower Tiny Square</h3>
+        <a href="games/big-tower-tiny-square.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Big Tower Tiny Square 2</h3>
+        <a href="games/big-tower-tiny-square-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>BitLife</h3>
+        <a href="games/bitlife.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bit Planes</h3>
+        <a href="games/bit-planes.htm" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Blocky Snakes</h3>
+        <a href="games/blocky-snakes.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bloxorz</h3>
+        <a href="games/bloxorz.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Blumgi Racers</h3>
+        <a href="games/blumgi-racers.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Blumgi Rocket</h3>
+        <a href="games/blumgi-rocket.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bloons TD</h3>
+        <a href="games/bloons-TD.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bloons TD 5</h3>
+        <a href="games/bloons-TD-5.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bob the Robber</h3>
+        <a href="games/bob-the-robber.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bob the Robber 2</h3>
+        <a href="games/bob-the-robber-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bob the Robber 5</h3>
+        <a href="games/bob-the-robber-5.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bouncy Motors</h3>
+        <a href="games/bouncy-motors.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Boxing Random</h3>
+        <a href="games/boxing-random.htm" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Boxel Rebound</h3>
+        <a href="games/boxel-rebound.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bow Masters</h3>
+        <a href="games/bow-masters.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Breaking the Bank</h3>
+        <a href="games/breaking-the-bank.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Bubble Shooter</h3>
+        <a href="games/bubble-shooter.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Burrito Bison Launcha Libre</h3>
+        <a href="games/burrito-bison-launcha-libre.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Candy Crush</h3>
+        <a href="games/candy-crush.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Capybara Clicker</h3>
+        <a href="games/capybara-clicker.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Car Drawing</h3>
+        <a href="games/car-drawing.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Car King Arena</h3>
+        <a href="games/car-king-arena.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Chaos Faction 2</h3>
+        <a href="games/chaos-faction-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Chess</h3>
+        <a href="games/chess.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Choppy Orc</h3>
+        <a href="games/choppy-orc.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>CircloO</h3>
+        <a href="games/circloO.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>CircloO 2</h3>
+        <a href="games/circloO-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Clash of Vikings</h3>
+        <a href="games/clash-of-vikings.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Cleanup I/O</h3>
+        <a href="games/cleanup-io.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Cluster Rush</h3>
+        <a href="games/cluster-rush.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Cookie Clicker</h3>
+        <a href="games/cookie-clicker.htm" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Coreball</h3>
+        <a href="games/coreball.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Crazy Cars</h3>
+        <a href="games/crazy-cars.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Crazy Cattle 3D</h3>
+        <a href="games/crazy-cattle-3D.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Crazy Crash Landing</h3>
+        <a href="games/crazy-crash-landing.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Crazy Motorcycle</h3>
+        <a href="games/crazy-motorcycle.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Crossy Road</h3>
+        <a href="games/crossy-road.htm" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Cut the Rope</h3>
+        <a href="games/cut-the-rope.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Cut the Rope 2</h3>
+        <a href="games/cut-the-rope-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Cut the Rope: Holiday Gift</h3>
+        <a href="games/cut-the-rope-holiday-gift.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Cut the Rope: Time Travel</h3>
+        <a href="games/cut-the-rope-time-travel.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Dadish</h3>
+        <a href="games/dadish.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Dadish 2</h3>
+        <a href="games/dadish-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Dadish 3</h3>
+        <a href="games/dadish-3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Deadly Descent</h3>
+        <a href="games/deadly-descent.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Death Chase</h3>
+        <a href="games/death-chase.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Death Run 3D</h3>
+        <a href="games/death-run-3D.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Demolition Derby Crash Racing</h3>
+        <a href="games/demolition-derby-crash-racing.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Doodle Jump</h3>
+        <a href="games/doodle-jump.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Draw Climber</h3>
+        <a href="games/draw-climber.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Dreadhead Parkour</h3>
+        <a href="games/dreadhead-parkour.htm" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Drift Boss</h3>
+        <a href="games/drift-boss.htm" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Drift Hunters Pro</h3>
+        <a href="games/drift-hunters-pro.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Drive Mad</h3>
+        <a href="games/drive-mad.htm" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Duck Life</h3>
+        <a href="games/duck-life.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Duck Life 2</h3>
+        <a href="games/duck-life-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Duck Life 3</h3>
+        <a href="games/duck-life-3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Duck Life 4</h3>
+        <a href="games/duck-life-4.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Duck Life 5</h3>
+        <a href="games/duck-life-5.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Ducklings.io</h3>
+        <a href="games/ducklings-io.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Eagle Ride</h3>
+        <a href="games/eagle-ride.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Earn to Die</h3>
+        <a href="games/earn-to-die.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Earn to Die 2</h3>
+        <a href="games/earn-to-die-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Eggy Car</h3>
+        <a href="games/eggy-car.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Elastic Face</h3>
+        <a href="games/elastic-face.htm" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Escape Road</h3>
+        <a href="games/escape-road.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Escape Road 2</h3>
+        <a href="games/escape-road-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Escape Road 3</h3>
+        <a href="games/escape-road-3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Escaping the Prison</h3>
+        <a href="games/escaping-the-prison.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Eugene's Life</h3>
+        <a href="games/eugenes-life.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Evil Glitch</h3>
+        <a href="games/evil-glitch.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Fancy Pants Adventure</h3>
+        <a href="games/fancy-pants-adventure.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Fancy Pants Adventure 2</h3>
+        <a href="games/fancy-pants-adventure-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Fireblob</h3>
+        <a href="games/fireblob.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Fireboy and Watergirl</h3>
+        <a href="games/fireboy-and-watergirl.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Fireboy and Watergirl 2</h3>
+        <a href="games/fireboy-and-watergirl-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Fireboy and Watergirl 3</h3>
+        <a href="games/fireboy-and-watergirl-3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Fireboy and Watergirl 4</h3>
+        <a href="games/fireboy-and-watergirl-4.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Flappy Bird</h3>
+        <a href="games/flappy-bird.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Fleeing the Complex</h3>
+        <a href="games/fleeing-the-complex.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Flood Runner 2</h3>
+        <a href="games/flood-runner-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Flood Runner 3</h3>
+        <a href="games/flood-runner-3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Flood Runner 4</h3>
+        <a href="games/flood-runner-4.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>FNAF</h3>
+        <a href="games/fnaf.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>FNAF 2</h3>
+        <a href="games/fnaf-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>FNAF 3</h3>
+        <a href="games/fnaf-3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>FNAF 4</h3>
+        <a href="games/fnaf-4.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>FNAF Sister Location</h3>
+        <a href="games/fnaf-sister-location.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Football Bros</h3>
+        <a href="games/football-bros.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Football Legends</h3>
+        <a href="games/football-legends.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Free Rider 3</h3>
+        <a href="games/free-rider-3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Friday Night Funkin</h3>
+        <a href="games/friday-night-funkin.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Fruit Ninja</h3>
+        <a href="games/fruit-ninja.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Funny Battle</h3>
+        <a href="games/funny-battle.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Funny Battle 2</h3>
+        <a href="games/funny-battle-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Funny Mad Racing</h3>
+        <a href="games/funny-mad-racing.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Funny Shooter 2</h3>
+        <a href="games/funny-shooter-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Geometry Dash Lite</h3>
+        <a href="games/geometry-dash-lite.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Geometry Vibes</h3>
+        <a href="games/geometry-vibes.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Get On Top</h3>
+        <a href="games/get-on-top.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Getaway Shootout</h3>
+        <a href="games/getaway-shootout.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Google Baseball</h3>
+        <a href="games/google-baseball.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Google Dino</h3>
+        <a href="games/google-dino.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Gladihoppers</h3>
+        <a href="games/gladi-hoppers.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Granny</h3>
+        <a href="games/granny.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Granny 2</h3>
+        <a href="games/granny-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Guess Their Answer</h3>
+        <a href="games/guess-their-answer.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Hanger 2</h3>
+        <a href="games/hanger-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Happy Wheels</h3>
+        <a href="games/happy-wheels.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Helix Jump</h3>
+        <a href="games/helix-jump.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Highway Traffic</h3>
+        <a href="games/highway-traffic.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Hill Climb Racing Lite</h3>
+        <a href="games/hill-climb-racing-lite.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Hole.io</h3>
+        <a href="games/hole-io.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>House of Hazards</h3>
+        <a href="games/house-of-hazards.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Hover Racer Drive</h3>
+        <a href="games/hover-racer-drive.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Ice Dodo</h3>
+        <a href="games/ice-dodo.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Idle Breakout</h3>
+        <a href="games/idle-breakout.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Idle Dice</h3>
+        <a href="games/idle-dice.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Infiltrating the Airship</h3>
+        <a href="games/infiltrating-the-airship.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Iron Snout</h3>
+        <a href="games/iron-snout.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Jacksmith</h3>
+        <a href="games/jacksmith.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Jetpack Joyride</h3>
+        <a href="games/jetpack-joyride.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Johnny Trigger</h3>
+        <a href="games/johnny-trigger.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Jumping Shell</h3>
+        <a href="games/jumping-shell.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Karate Bros</h3>
+        <a href="games/karate-bros.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Kart Bros</h3>
+        <a href="games/kart-bros.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Kitty Toy</h3>
+        <a href="games/kittytoy.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Learn to Fly</h3>
+        <a href="games/learn-to-fly.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Learn to Fly 2</h3>
+        <a href="games/learn-to-fly-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Learn to Fly 3</h3>
+        <a href="games/learn-to-fly-3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Learn to Fly Idle</h3>
+        <a href="games/learn-to-fly-idle.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Level Devil</h3>
+        <a href="games/level-devil.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Little Alchemy 2</h3>
+        <a href="games/little-alchemy-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Madalin Stunt Cars 2</h3>
+        <a href="games/madalin-stunt-cars-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Madness Project Nexus</h3>
+        <a href="games/madness-project-nexus.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Melon Playground</h3>
+        <a href="games/melon-playground.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Merge Round Racers</h3>
+        <a href="games/merge-round-racers.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Minesweeper</h3>
+        <a href="games/minesweeper.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Monkey Mart</h3>
+        <a href="games/monkey-mart.htm" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Monster Tracks</h3>
+        <a href="games/monster-tracks.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Motherload</h3>
+        <a href="games/motherload.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Moto X3M</h3>
+        <a href="games/moto-x3m.htm" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Moto X3M 2</h3>
+        <a href="games/moto-x3m-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Moto X3M 3</h3>
+        <a href="games/moto-x3m-3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Moto X3M Pool Party</h3>
+        <a href="games/moto-x3m-pool-party.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Moto X3M Spooky Land</h3>
+        <a href="games/moto-x3m-spooky-land.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Moto X3M Winter</h3>
+        <a href="games/moto-x3m-winter.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Murder</h3>
+        <a href="games/murder.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Noob Miner</h3>
+        <a href="games/noob-miner.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>OpenTTD</h3>
+        <a href="games/openTTD.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Opposite Day</h3>
+        <a href="games/opposite-day.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>OvO</h3>
+        <a href="games/ovo.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>OvO 2</h3>
+        <a href="games/ovo-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>OvO 3 Dimensions</h3>
+        <a href="games/ovo-3-dimensions.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Pac-Man</h3>
+        <a href="games/pac-man.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Bakeria</h3>
+        <a href="games/papas-bakeria.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Burgeria</h3>
+        <a href="games/papas-burgeria.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Cheeseria</h3>
+        <a href="games/papas-cheeseria.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Cupcakeria</h3>
+        <a href="games/papas-cupcakeria.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Donuteria</h3>
+        <a href="games/papas-donuteria.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Freezeria</h3>
+        <a href="games/papas-freezeria.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Hot Doggeria</h3>
+        <a href="games/papas-hot-doggeria.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Pancakeria</h3>
+        <a href="games/papas-pancakeria.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Pastaria</h3>
+        <a href="games/papas-pastaria.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Pizzeria</h3>
+        <a href="games/papas-pizzeria.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Scooperia</h3>
+        <a href="games/papas-scooperia.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Sushiria</h3>
+        <a href="games/papas-sushiria.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Taco Mia</h3>
+        <a href="games/papas-taco-mia.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Papa's Wingeria</h3>
+        <a href="games/papas-wingeria.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Paper.io 2</h3>
+        <a href="games/paper-io-2.htm" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Parking Fury</h3>
+        <a href="games/parking-fury.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Parking Fury 2</h3>
+        <a href="games/parking-fury-2.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Parking Fury 3</h3>
+        <a href="games/parking-fury-3.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Pico's School</h3>
+        <a href="games/picos-school.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Plonky</h3>
+        <a href="games/plonky.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <article class="servei">
+        <h3>Polytrack</h3>
+        <a href="games/polytrack.html" class="boto-tornar">Jugar</a>
+      </article>
+
+      <div class="no-results" id="no-results">
+        No se han encontrado juegos que coincidan con la búsqueda.
+      </div>
     </div>
 
     <div style="text-align: center;">
@@ -234,6 +1380,36 @@
   <footer>
     © 2026 MRuiz · Ningún derecho reservado
   </footer>
+
+  <script>
+    function filtrarJuegos() {
+      const input = document.getElementById('cercador');
+      const filter = input.value.toLowerCase();
+      const contenedor = document.getElementById('llista-jocs');
+      const articles = contenedor.getElementsByTagName('article');
+      const noResults = document.getElementById('no-results');
+      let visibles = 0;
+
+      for (let i = 0; i < articles.length; i++) {
+        const titol = articles[i].getElementsByTagName('h3')[0];
+        if (titol) {
+          const text = titol.textContent || titol.innerText;
+          if (text.toLowerCase().indexOf(filter) > -1) {
+            articles[i].style.display = "";
+            visibles++;
+          } else {
+            articles[i].style.display = "none";
+          }
+        }
+      }
+
+      if (visibles === 0) {
+        noResults.style.display = "block";
+      } else {
+        noResults.style.display = "none";
+      }
+    }
+  </script>
 </body>
 
 </html>
