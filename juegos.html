@@ -171,6 +171,9 @@
       padding: 30px;
       display: none;
     }
+    #juegos-recientes { 
+      margin-bottom: 50px;
+    }
 
     footer {
       padding: 25px;
@@ -230,6 +233,13 @@
       </div>
     </section>
 
+    <section class="titol-seccio" id="seccion-recientes" style="display:none;">
+      <h2>Jugados recientemente</h2>
+      <p>Tus últimos 4 juegos.</p>
+    </section>
+
+<div class="detalls-categoria" id="juegos-recientes"></div>
+    
     <div class="detalls-categoria" id="llista-jocs">
       <!-- Jocs principals i destacats -->
       <article class="servei">
@@ -1434,6 +1444,77 @@
       }
     }
   </script>
+  <script>
+  const CLAVE_RECIENTES = "juegosRecientesMRuiz";
+
+  function obtenerRecientes() {
+    try {
+      return JSON.parse(localStorage.getItem(CLAVE_RECIENTES)) || [];
+    } catch {
+      return [];
+    }
+  }
+
+  function guardarReciente(nombre, url) {
+    let recientes = obtenerRecientes();
+
+    recientes = recientes.filter(juego => juego.nombre !== nombre);
+    recientes.unshift({ nombre, url });
+    recientes = recientes.slice(0, 4);
+
+    localStorage.setItem(CLAVE_RECIENTES, JSON.stringify(recientes));
+    mostrarRecientes();
+  }
+
+  function mostrarRecientes() {
+    const recientes = obtenerRecientes();
+    const contenedor = document.getElementById("juegos-recientes");
+    const seccion = document.getElementById("seccion-recientes");
+
+    contenedor.innerHTML = "";
+
+    if (recientes.length === 0) {
+      seccion.style.display = "none";
+      return;
+    }
+
+    seccion.style.display = "block";
+
+    recientes.forEach(juego => {
+      const articulo = document.createElement("article");
+      articulo.className = "servei";
+
+      const titulo = document.createElement("h3");
+      titulo.textContent = juego.nombre;
+
+      const enlace = document.createElement("a");
+      enlace.href = juego.url;
+      enlace.className = "boto-tornar";
+      enlace.textContent = "Jugar";
+      enlace.addEventListener("click", () => {
+        guardarReciente(juego.nombre, juego.url);
+      });
+
+      articulo.appendChild(titulo);
+      articulo.appendChild(enlace);
+      contenedor.appendChild(articulo);
+    });
+  }
+
+  document.querySelectorAll("#llista-jocs article a.boto-tornar").forEach(enlace => {
+    const articulo = enlace.closest("article");
+    const titulo = articulo?.querySelector("h3")?.textContent?.trim();
+
+    if (titulo) {
+      enlace.addEventListener("click", () => {
+        guardarReciente(titulo, enlace.getAttribute("href"));
+      });
+    }
+  });
+
+  mostrarRecientes();
+</script>
+  
 </body>
 
 </html>
