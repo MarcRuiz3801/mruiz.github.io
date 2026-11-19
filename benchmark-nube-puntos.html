@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benchmark - Cubo de Puntos Azules</title>
+  <style>
+    :root { color-scheme: dark; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: radial-gradient(ellipse at center, #07111f 0%, #02050a 70%, #000 100%);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+      cursor: grab;
+    }
+    canvas.dragging { cursor: grabbing; }
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      padding: 12px 14px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(120, 180, 255, 0.25);
+      border-radius: 10px;
+      color: #e8f3ff;
+      line-height: 1.35;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+      width: 340px;
+      max-width: calc(100vw - 24px);
+      user-select: none;
+    }
+    #fps {
+      font-size: 28px;
+      font-weight: 700;
+      color: #7fd0ff;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    #points, #status {
+      font-size: 13px;
+      color: #b9d7ff;
+    }
+    #status { opacity: 0.95; margin-top: 2px; }
+    .meter { margin-top: 10px; }
+    .meter label {
+      display: block;
+      font-size: 12px;
+      color: #cfe6ff;
+      margin-bottom: 4px;
+    }
+    progress {
+      width: 100%;
+      height: 12px;
+      appearance: none;
+      -webkit-appearance: none;
+      border: none;
+      border-radius: 6px;
+      overflow: hidden;
+      background: rgba(20, 40, 70, 0.8);
+    }
+    progress::-webkit-progress-bar {
+      background: rgba(20, 40, 70, 0.8);
+      border-radius: 6px;
+    }
+    progress::-webkit-progress-value {
+      background: linear-gradient(90deg, #2f8cff, #7fd0ff);
+      border-radius: 6px;
+    }
+    progress::-moz-progress-bar {
+      background: linear-gradient(90deg, #2f8cff, #7fd0ff);
+      border-radius: 6px;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: #5fb8ff;
+    }
+    .controls {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .controls button {
+      padding: 7px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(140, 190, 255, 0.35);
+      background: rgba(40, 110, 180, 0.35);
+      color: #eaf6ff;
+      font: inherit;
+      cursor: pointer;
+    }
+    .controls button:hover { background: rgba(60, 140, 220, 0.45); }
+    .controls button:active { transform: translateY(1px); }
+    .hint {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #9ec7f3;
+      opacity: 0.85;
+    }
+    .analysis {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(10, 30, 55, 0.7);
+      border: 1px solid rgba(120, 180, 255, 0.2);
+      color: #dff1ff;
+      font-size: 12px;
+      line-height: 1.4;
+      white-space: pre-line;
+    }
+    .analysis strong { color: #7fd0ff; }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <div id="hud">
+    <div id="fps">FPS: --</div>
+    <div id="points">Puntos: 10 / 300.000</div>
+    <div id="status">Estado: en espera (rotación automática)</div>
+
+    <div class="meter">
+      <label for="progressBar">Progreso hasta 300.000 de puntos</label>
+      <progress id="progressBar" max="300000" value="10"></progress>
+    </div>
+
+    <div class="meter">
+      <label for="speedRange">Velocidad de agregado: <span id="speedValue">1.500</span> pts/s</label>
+      <input id="speedRange" type="range" min="0" max="100000" step="100" value="1500">
+    </div>
+
+    <div class="controls">
+      <button id="startBtn">Iniciar</button>
+      <button id="resetBtn">Reiniciar</button>
+    </div>
+    <div class="hint">Cubo de puntos azules. Rota automáticamente; arrastra para rotarlo. Usa la rueda del ratón para hacer zoom. Al iniciar, se agregan puntos según la velocidad. Al llegar al límite, vuelve a 10 puntos y se detiene.</div>
+    <div id="analysis" class="analysis" hidden></div>
+  </div>
+
+  <script>
+    (() => {
+      const canvas = document.getElementById('c');
+      const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+      const fpsEl = document.getElementById('fps');
+      const pointsEl = document.getElementById('points');
+      const statusEl = document.getElementById('status');
+      const progressBar = document.getElementById('progressBar');
+      const speedRange = document.getElementById('speedRange');
+      const speedValueEl = document.getElementById('speedValue');
+      const startBtn = document.getElementById('startBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const analysisEl = document.getElementById('analysis');
+
+      const INITIAL_POINTS = 10;
+      const MAX_POINTS = 300000;
+      const CUBE_SIZE = 700;
+      const HALF = CUBE_SIZE / 2;
+      const FOV = 700;
+      const DEFAULT_CAMERA_Z = 950;
+      const MIN_CAMERA_Z = 350;
+      const MAX_CAMERA_Z = 4000;
+      const AUTO_ROT_SPEED = 0.55; // radianes por segundo (eje Y)
+
+      let width = 0, height = 0, cx = 0, cy = 0, dpr = 1;
+      let capacity = 0;
+      let count = 0;
+      let x, y, z, s;
+
+      let running = false;
+      let dragging = false;
+      let rotX = -0.45;
+      let rotY = 0.6;
+      let cameraZ = DEFAULT_CAMERA_Z;
+      let pointsPerSecond = Number(speedRange.value) || 1500;
+      let addAccumulator = 0;
+      let lastTime = 0;
+      let fpsAccumTime = 0;
+      let fpsFrames = 0;
+      let fpsValue = null;
+      let rafId = 0;
+
+      // Estadísticas de la prueba
+      let testActive = false;
+      let testCompleted = false;
+      let testElapsed = 0;
+      let fpsMin = Infinity;
+      let fpsMax = 0;
+      let fpsSum = 0;
+      let fpsSampleCount = 0;
+
+      function rand(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function ensureCapacity(n) {
+        if (n <= capacity) return;
+        const newCap = Math.max(n, capacity ? Math.floor(capacity * 1.5) : 4096);
+        const nx = new Float32Array(newCap);
+        const ny = new Float32Array(newCap);
+        const nz = new Float32Array(newCap);
+        const ns = new Float32Array(newCap);
+        if (capacity > 0) {
+          nx.set(x);
+          ny.set(y);
+          nz.set(z);
+          ns.set(s);
+        }
+        x = nx; y = ny; z = nz; s = ns;
+        capacity = newCap;
+      }
+
+      function initPoint(i) {
+        x[i] = rand(-HALF, HALF);
+        y[i] = rand(-HALF, HALF);
+        z[i] = rand(-HALF, HALF);
+        s[i] = rand(1.0, 2.2);
+      }
+
+      function addPoints(n) {
+        if (n <= 0 || count >= MAX_POINTS) return;
+        const toAdd = Math.min(n, MAX_POINTS - count);
+        ensureCapacity(count + toAdd);
+        for (let i = count; i < count + toAdd; i++) initPoint(i);
+        count += toAdd;
+        updateHud();
+      }
+
+      function setPointsToInitial() {
+        capacity = 0;
+        count = 0;
+        x = y = z = s = null;
+        ensureCapacity(INITIAL_POINTS);
+        for (let i = 0; i < INITIAL_POINTS; i++) initPoint(i);
+        count = INITIAL_POINTS;
+      }
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = Math.floor(window.innerWidth);
+        height = Math.floor(window.innerHeight);
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        cx = width / 2;
+        cy = height / 2;
+      }
+
+      function formatNumber(n) {
+        return Math.round(n).toLocaleString('es-ES');
+      }
+
+      function updateHud(fpsText) {
+        if (fpsText !== undefined) {
+          fpsEl.textContent = fpsText;
+        } else if (fpsValue !== null) {
+          fpsEl.textContent = `FPS: ${fpsValue}`;
+        } else {
+          fpsEl.textContent = 'FPS: --';
+        }
+
+        pointsEl.textContent = `Puntos: ${count.toLocaleString('es-ES')} / ${MAX_POINTS.toLocaleString('es-ES')}`;
+        progressBar.max = MAX_POINTS;
+        progressBar.value = count;
+        speedValueEl.textContent = pointsPerSecond.toLocaleString('es-ES');
+
+        if (running) {
+          statusEl.textContent = 'Estado: en ejecución (agregando puntos)';
+        } else if (testCompleted) {
+          statusEl.textContent = 'Estado: prueba finalizada (vuelto a 10 puntos)';
+        } else if (dragging) {
+          statusEl.textContent = 'Estado: en espera (rotación manual)';
+        } else {
+          statusEl.textContent = 'Estado: en espera (rotación automática)';
+        }
+        startBtn.textContent = running ? 'Pausar' : 'Iniciar';
+      }
+
+      function clearAnalysis() {
+        analysisEl.hidden = true;
+        analysisEl.textContent = '';
+      }
+
+      function showAnalysis(text) {
+        analysisEl.textContent = text;
+        analysisEl.hidden = false;
+      }
+
+      function buildAnalysis() {
+        const elapsed = Math.max(0, testElapsed);
+        const avgFps = fpsSampleCount > 0 ? (fpsSum / fpsSampleCount) : (fpsValue || 0);
+        const minFps = fpsSampleCount > 0 && isFinite(fpsMin) ? fpsMin : (fpsValue || 0);
+        const maxFps = fpsSampleCount > 0 && isFinite(fpsMax) ? fpsMax : (fpsValue || 0);
+        const addedPoints = Math.max(0, MAX_POINTS - INITIAL_POINTS);
+        const effectiveRate = elapsed > 0 ? (addedPoints / elapsed) : 0;
+
+        let rendimiento;
+        if (avgFps >= 50) rendimiento = 'Fluido (alto)';
+        else if (avgFps >= 30) rendimiento = 'Aceptable (medio)';
+        else if (avgFps >= 15) rendimiento = 'Bajo';
+        else if (avgFps > 0) rendimiento = 'Muy bajo';
+        else rendimiento = 'Sin datos suficientes';
+
+        let estabilidad;
+        if (fpsSampleCount > 0) {
+          const ratio = maxFps > 0 ? (minFps / maxFps) : 0;
+          if (ratio >= 0.7) estabilidad = 'Estable';
+          else if (ratio >= 0.4) estabilidad = 'Moderada';
+          else estabilidad = 'Inestable';
+        } else {
+          estabilidad = 'Sin datos suficientes';
+        }
+
+        return [
+          'Análisis de la prueba',
+          `• Resultado: completada (se alcanzó el límite de ${formatNumber(MAX_POINTS)} puntos y se reinició a ${formatNumber(INITIAL_POINTS)}).`,
+          `• Tiempo total: ${elapsed.toFixed(2)} s`,
+          `• FPS promedio: ${formatNumber(avgFps)} (mín: ${formatNumber(minFps)}, máx: ${formatNumber(maxFps)})`,
+          `• Tasa efectiva de agregado: ${formatNumber(effectiveRate)} pts/s`,
+          `• Velocidad configurada al finalizar: ${formatNumber(pointsPerSecond)} pts/s`,
+          `• Rendimiento: ${rendimiento}`,
+          `• Estabilidad: ${estabilidad}`
+        ].join('\n');
+      }
+
+      function finishTest() {
+        if (testCompleted) return;
+        running = false;
+        testActive = false;
+        testCompleted = true;
+        addAccumulator = 0;
+
+        const analysisText = buildAnalysis();
+        setPointsToInitial();
+        showAnalysis(analysisText);
+        updateHud();
+      }
+
+      function updateBenchmark(dt) {
+        // Los puntos permanecen quietos; solo se añaden más mientras está en ejecución
+        if (count >= MAX_POINTS) {
+          finishTest();
+          return;
+        }
+        if (pointsPerSecond <= 0) {
+          addAccumulator = 0;
+          return;
+        }
+
+        addAccumulator += dt * pointsPerSecond;
+        const toAdd = Math.floor(addAccumulator);
+        if (toAdd > 0) {
+          addAccumulator -= toAdd;
+          addPoints(toAdd);
+          if (count >= MAX_POINTS) {
+            finishTest();
+          }
+        }
+      }
+
+      function draw() {
+        ctx.fillStyle = '#030812';
+        ctx.fillRect(0, 0, width, height);
+
+        if (count <= 0) return;
+
+        const cosY = Math.cos(rotY);
+        const sinY = Math.sin(rotY);
+        const cosX = Math.cos(rotX);
+        const sinX = Math.sin(rotX);
+
+        for (let i = 0; i < count; i++) {
+          const px = x[i];
+          const py = y[i];
+          const pz = z[i];
+
+          // Rotación alrededor del eje Y (automática o manual)
+          let rx = px * cosY - pz * sinY;
+          let rz = px * sinY + pz * cosY;
+
+          // Rotación alrededor del eje X (manual)
+          let ry = py * cosX - rz * sinX;
+          rz = py * sinX + rz * cosX;
+
+          const depth = rz + cameraZ;
+          if (depth <= 1) continue;
+
+          const scale = FOV / depth;
+          const sx = cx + rx * scale;
+          const sy = cy + ry * scale;
+
+          if (sx < -12 || sx > width + 12 || sy < -12 || sy > height + 12) continue;
+
+          const depthNorm = Math.min(1, Math.max(0, (rz + HALF) / CUBE_SIZE));
+          const alpha = 0.18 + (1 - depthNorm) * 0.82;
+          const blue = 170 + Math.floor((1 - depthNorm) * 85);
+          const green = 95 + Math.floor((1 - depthNorm) * 120);
+          const size = Math.max(1, s[i] * scale * 1.7);
+
+          ctx.fillStyle = `rgba(35, ${green}, ${blue}, ${alpha.toFixed(3)})`;
+          ctx.fillRect(sx, sy, size, size);
+        }
+      }
+
+      function frame(now) {
+        if (!lastTime) lastTime = now;
+        const realDt = (now - lastTime) / 1000;
+        lastTime = now;
+
+        // dt para simulación (evita saltos grandes tras pausas/cambios de pestaña)
+        const simDt = Math.min(0.1, Math.max(0, realDt));
+
+        // Si no se está rotando manualmente, el cubo sigue rotando solo
+        if (!dragging) {
+          rotY += AUTO_ROT_SPEED * simDt;
+        }
+
+        if (running) {
+          updateBenchmark(simDt);
+          if (realDt > 0 && realDt < 1) {
+            testElapsed += realDt;
+          } else {
+            testElapsed += simDt;
+          }
+        }
+
+        draw();
+
+        // FPS real medido con tiempo transcurrido real entre frames
+        if (realDt > 0 && realDt < 1) {
+          fpsFrames++;
+          fpsAccumTime += realDt;
+          if (fpsAccumTime >= 0.25) {
+            fpsValue = Math.round(fpsFrames / fpsAccumTime);
+            if (running && testActive) {
+              fpsMin = Math.min(fpsMin, fpsValue);
+              fpsMax = Math.max(fpsMax, fpsValue);
+              fpsSum += fpsValue;
+              fpsSampleCount++;
+            }
+            fpsFrames = 0;
+            fpsAccumTime = 0;
+            updateHud();
+          }
+        } else {
+          // Ignorar muestras anómalas (p.ej. vuelta de pestaña en background)
+          fpsFrames = 0;
+          fpsAccumTime = 0;
+        }
+
+        rafId = requestAnimationFrame(frame);
+      }
+
+      function startNewTest() {
+        testActive = true;
+        testCompleted = false;
+        testElapsed = 0;
+        fpsMin = Infinity;
+        fpsMax = 0;
+        fpsSum = 0;
+        fpsSampleCount = 0;
+        clearAnalysis();
+        // Asegurar que la prueba empieza desde el estado inicial de puntos
+        setPointsToInitial();
+      }
+
+      function startOrPause() {
+        if (!running) {
+          if (!testActive || testCompleted) {
+            startNewTest();
+          }
+          running = true;
+          addAccumulator = 0;
+        } else {
+          running = false;
+        }
+        updateHud();
+      }
+
+      function reset() {
+        running = false;
+        testActive = false;
+        testCompleted = false;
+        testElapsed = 0;
+        fpsMin = Infinity;
+        fpsMax = 0;
+        fpsSum = 0;
+        fpsSampleCount = 0;
+        rotX = -0.45;
+        rotY = 0.6;
+        cameraZ = DEFAULT_CAMERA_Z;
+        addAccumulator = 0;
+        fpsAccumTime = 0;
+        fpsFrames = 0;
+        fpsValue = null;
+        clearAnalysis();
+        setPointsToInitial();
+        updateHud('FPS: --');
+      }
+
+      // Interacción: rotar con ratón/táctil arrastrando
+      let lastPointerX = 0;
+      let lastPointerY = 0;
+
+      canvas.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        lastPointerX = e.clientX;
+        lastPointerY = e.clientY;
+        canvas.classList.add('dragging');
+        updateHud();
+        try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
+      });
+
+      canvas.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - lastPointerX;
+        const dy = e.clientY - lastPointerY;
+        lastPointerX = e.clientX;
+        lastPointerY = e.clientY;
+
+        rotY += dx * 0.005;
+        rotX += dy * 0.005;
+        const limit = Math.PI / 2 - 0.05;
+        if (rotX > limit) rotX = limit;
+        if (rotX < -limit) rotX = -limit;
+      });
+
+      function endDrag(e) {
+        if (!dragging) return;
+        dragging = false;
+        canvas.classList.remove('dragging');
+        updateHud();
+        if (e && e.pointerId !== undefined) {
+          try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
+        }
+      }
+
+      canvas.addEventListener('pointerup', endDrag);
+      canvas.addEventListener('pointercancel', endDrag);
+      canvas.addEventListener('pointerleave', endDrag);
+
+      // Zoom con rueda del ratón
+      canvas.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const zoomFactor = 1 + Math.min(0.35, Math.abs(e.deltaY) * 0.0015);
+        if (e.deltaY < 0) {
+          cameraZ /= zoomFactor; // acercar
+        } else {
+          cameraZ *= zoomFactor; // alejar
+        }
+        cameraZ = Math.max(MIN_CAMERA_Z, Math.min(MAX_CAMERA_Z, cameraZ));
+      }, { passive: false });
+
+      speedRange.addEventListener('input', () => {
+        pointsPerSecond = Number(speedRange.value) || 0;
+        updateHud();
+      });
+
+      startBtn.addEventListener('click', startOrPause);
+      resetBtn.addEventListener('click', reset);
+      window.addEventListener('resize', resize, { passive: true });
+
+      // Estado inicial: cubo visible con 10 puntos y rotación automática
+      progressBar.max = MAX_POINTS;
+      resize();
+      setPointsToInitial();
+      updateHud('FPS: --');
+      rafId = requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>
