@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Juegos - MRuiz</title>
+  <link rel="icon" type="image/png" href="favicon.png">
 
   <style>
     :root {
@@ -197,6 +198,790 @@
       }
     }
   </style>
+
+  <style>
+    /* ============================================================
+       MRuiz · catálogo de juegos — tema oscuro animado
+       (esta capa sobrescribe los estilos base de arriba)
+       ============================================================ */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg: #060914;
+      --border: rgba(148, 163, 214, 0.16);
+      --text: #f4f7ff;
+      --muted: #94a3c4;
+      --cyan: #22d3ee;
+      --violet: #a855f7;
+      --radius: 20px;
+    }
+
+    html {
+      scroll-padding-top: 90px;
+    }
+
+    body {
+      font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -30%;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        radial-gradient(38% 32% at 16% 12%, rgba(37, 99, 235, 0.28), transparent 70%),
+        radial-gradient(34% 30% at 84% 10%, rgba(147, 51, 234, 0.24), transparent 70%),
+        radial-gradient(42% 36% at 72% 82%, rgba(6, 182, 212, 0.18), transparent 70%),
+        radial-gradient(30% 28% at 10% 88%, rgba(236, 72, 153, 0.14), transparent 70%);
+      filter: blur(20px);
+      animation: drift 24s ease-in-out infinite alternate;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 56px 56px;
+      -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, #000 15%, transparent 85%);
+      mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, #000 15%, transparent 85%);
+    }
+
+    /* Barra superior */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 14px max(7%, 20px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(6, 9, 20, 0.72);
+      backdrop-filter: blur(20px) saturate(140%);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(103, 232, 249, 0.65), rgba(168, 85, 247, 0.5), transparent);
+    }
+
+    nav {
+      max-width: 1180px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.6px;
+      background: linear-gradient(100deg, #ffffff 10%, #a5b4fc 55%, #67e8f9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .logo::before {
+      content: "";
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      box-shadow: 0 0 16px var(--cyan);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    nav a {
+      margin-left: 0;
+      padding: 9px 18px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #dbe4ff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: color 0.25s, border-color 0.25s, background 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+
+    nav a:hover {
+      color: #fff;
+      text-decoration: none;
+      border-color: rgba(103, 232, 249, 0.6);
+      background: rgba(103, 232, 249, 0.1);
+      box-shadow: 0 0 22px rgba(34, 211, 238, 0.18);
+      transform: translateY(-2px);
+    }
+
+    /* Cabecera principal */
+    main {
+      width: min(1180px, 92%);
+      padding: 52px 0 90px;
+    }
+
+    .titol-seccio {
+      margin-bottom: 26px;
+    }
+
+    .hero .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 17px;
+      border: 1px solid rgba(125, 211, 252, 0.28);
+      border-radius: 999px;
+      background: rgba(125, 211, 252, 0.08);
+      backdrop-filter: blur(8px);
+      color: #bae6fd;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2.2px;
+      animation: fadeUp 0.7s 0.05s both;
+    }
+
+    .hero .eyebrow span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .hero h2 {
+      margin: 20px 0 12px;
+      font-size: clamp(2.6rem, 6.5vw, 4.8rem);
+      font-weight: 800;
+      line-height: 1.02;
+      letter-spacing: -2.5px;
+      background: linear-gradient(100deg, #ffffff 5%, #a5b4fc 35%, #67e8f9 62%, #f0abfc 95%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 9s linear infinite, fadeUp 0.8s 0.15s both;
+    }
+
+    .hero > p {
+      max-width: 620px;
+      margin: 0 auto;
+      color: #b6c4e4;
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      animation: fadeUp 0.8s 0.25s both;
+    }
+
+    /* Buscador */
+    .cercador-container {
+      max-width: 680px;
+      margin: 32px auto 20px;
+      animation: fadeUp 0.8s 0.35s both;
+    }
+
+    .search-shell {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 5px 8px 5px 20px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(9, 14, 30, 0.78);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+
+    .search-shell:focus-within {
+      border-color: rgba(103, 232, 249, 0.6);
+      box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.1), 0 20px 50px rgba(0, 0, 0, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .search-shell svg {
+      width: 20px;
+      height: 20px;
+      flex: none;
+      stroke: #7dd3fc;
+    }
+
+    .cercador-input,
+    .cercador-input:focus {
+      flex: 1;
+      width: 100%;
+      padding: 12px 0;
+      border: none;
+      outline: none;
+      box-shadow: none;
+      background: transparent;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1.05rem;
+    }
+
+    .cercador-input::placeholder {
+      color: #64748b;
+    }
+
+    .search-kbd {
+      padding: 3px 8px;
+      border: 1px solid rgba(148, 163, 214, 0.28);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .clear-search {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 9px;
+      background: rgba(148, 163, 214, 0.16);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1.2rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.25s;
+    }
+
+    .clear-search:hover {
+      background: rgba(244, 114, 182, 0.28);
+      transform: rotate(90deg);
+    }
+
+    .clear-search[hidden] {
+      display: none;
+    }
+
+    .resultats {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .resultats strong {
+      color: #7dd3fc;
+      font-weight: 700;
+    }
+
+    /* Filtros */
+    .chips {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 auto 36px;
+      animation: fadeUp 0.8s 0.45s both;
+    }
+
+    .chip {
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.25s, border-color 0.25s, background 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+
+    .chip:hover {
+      color: var(--text);
+      border-color: rgba(167, 139, 250, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .chip.active {
+      color: #04121f;
+      border-color: transparent;
+      background: linear-gradient(120deg, #7dd3fc, #a5b4fc);
+      box-shadow: 0 8px 24px rgba(103, 232, 249, 0.25);
+    }
+
+    /* Recientes */
+    #seccion-recientes {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    #seccion-recientes h2 {
+      margin: 0;
+      color: var(--text);
+      background: none;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      animation: none;
+    }
+
+    #seccion-recientes h2::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 20px;
+      margin-right: 10px;
+      border-radius: 4px;
+      background: linear-gradient(var(--cyan), var(--violet));
+      vertical-align: -3px;
+      box-shadow: 0 0 14px rgba(34, 211, 238, 0.5);
+    }
+
+    #seccion-recientes p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    #juegos-recientes {
+      margin-bottom: 44px;
+    }
+
+    .detalls-categoria {
+      grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    /* Tarjetas de juego */
+    .servei {
+      --hue: 210;
+      position: relative;
+      isolation: isolate;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      min-height: 190px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(155deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 65%);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(22px) scale(0.98);
+      transition: opacity 0.55s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.35s, box-shadow 0.35s;
+    }
+
+    .servei.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .servei::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 0%), hsl(var(--hue) 90% 60% / 0.18), transparent 65%);
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+
+    .servei:hover::before {
+      opacity: 1;
+    }
+
+    .servei::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      pointer-events: none;
+      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.09), transparent);
+      transform: skewX(-18deg);
+      transition: left 0.7s ease;
+    }
+
+    .servei:hover::after {
+      left: 140%;
+    }
+
+    .servei:hover {
+      transform: translateY(-8px);
+      border-color: hsl(var(--hue) 90% 65% / 0.55);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45), 0 0 0 1px hsl(var(--hue) 90% 60% / 0.15);
+    }
+
+    .card-media {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 82px;
+      border: 1px solid hsl(var(--hue) 90% 70% / 0.18);
+      border-radius: 14px;
+      background:
+        radial-gradient(120% 140% at 15% 0%, hsl(var(--hue) 90% 62% / 0.42), transparent 60%),
+        linear-gradient(135deg, hsl(var(--hue) 75% 22% / 0.75), rgba(8, 12, 26, 0.85));
+      overflow: hidden;
+    }
+
+    .card-media::before {
+      content: "";
+      position: absolute;
+      top: -120px;
+      right: -50px;
+      width: 180px;
+      height: 180px;
+      border: 1px dashed hsl(var(--hue) 90% 75% / 0.22);
+      border-radius: 50%;
+      animation: spin 26s linear infinite;
+    }
+
+    .card-media::after {
+      content: "";
+      position: absolute;
+      bottom: -55px;
+      left: -20px;
+      width: 90px;
+      height: 90px;
+      border-radius: 22px;
+      background: hsl(var(--hue) 90% 65% / 0.1);
+      transform: rotate(20deg);
+    }
+
+    .card-thumb {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .card-media.has-thumb .card-thumb {
+      opacity: 1;
+    }
+
+    .card-media.has-thumb::before {
+      display: none;
+    }
+
+    .card-media.has-thumb::after {
+      inset: 0;
+      bottom: auto;
+      left: auto;
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      background: linear-gradient(0deg, rgba(3, 7, 18, 0.65), transparent 65%);
+      transform: none;
+    }
+
+    .card-media.has-thumb .card-glyph {
+      display: none;
+    }
+
+    .servei:hover .card-thumb {
+      transform: scale(1.08);
+    }
+
+    .card-glyph {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #ffffff, hsl(var(--hue) 100% 80%));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 4px 12px hsl(var(--hue) 90% 55% / 0.4));
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .servei:hover .card-glyph {
+      transform: scale(1.12) rotate(-4deg);
+    }
+
+    .card-play {
+      position: absolute;
+      right: 10px;
+      bottom: 9px;
+      z-index: 2;
+      padding: 3px 8px;
+      border: 1px solid hsl(var(--hue) 90% 70% / 0.25);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.28);
+      color: hsl(var(--hue) 90% 82%);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      z-index: 2;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: linear-gradient(120deg, #ffffff, hsl(var(--hue) 100% 78%));
+      color: #04121f;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      font-size: 0.58rem;
+      font-weight: 800;
+      letter-spacing: 0.9px;
+    }
+
+    .servei .card-title {
+      flex: 1;
+      margin: 0;
+      color: var(--text);
+      font-size: 0.98rem;
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: -0.2px;
+    }
+
+    .boto-tornar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 0;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 11px;
+      background: linear-gradient(120deg, hsl(var(--hue) 90% 60%), hsl(calc(var(--hue) + 45) 90% 62%));
+      box-shadow: 0 8px 20px hsl(var(--hue) 90% 50% / 0.25);
+      color: #07101f;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-align: center;
+      overflow: hidden;
+      transition: filter 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+
+    .boto-tornar::after {
+      content: "→";
+      font-size: 1.05rem;
+      transition: transform 0.25s;
+    }
+
+    .boto-tornar:hover {
+      color: #07101f;
+      text-decoration: none;
+      background: linear-gradient(120deg, hsl(var(--hue) 90% 60%), hsl(calc(var(--hue) + 45) 90% 62%));
+      filter: brightness(1.12);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px hsl(var(--hue) 90% 50% / 0.4);
+    }
+
+    .boto-tornar:hover::after {
+      transform: translateX(4px);
+    }
+
+    .boto-tornar:active {
+      transform: translateY(0);
+    }
+
+    /* Sin resultados */
+    .no-results {
+      display: none;
+      grid-column: 1 / -1;
+      padding: 56px 20px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .no-results.show {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .no-results .nr-icon {
+      font-size: 2.6rem;
+      filter: grayscale(0.2);
+    }
+
+    .no-results strong {
+      color: var(--text);
+      font-size: 1.2rem;
+    }
+
+    .reset-btn {
+      margin-top: 6px;
+      padding: 9px 20px;
+      border: 1px solid rgba(125, 211, 252, 0.4);
+      border-radius: 999px;
+      background: rgba(125, 211, 252, 0.08);
+      color: #bae6fd;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.25s;
+    }
+
+    .reset-btn:hover {
+      background: rgba(125, 211, 252, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .volver-container {
+      margin-top: 50px;
+      text-align: center;
+    }
+
+    .volver-container .boto-tornar {
+      width: auto;
+      display: inline-flex;
+      --hue: 210;
+    }
+
+    /* Botón flotante de subir */
+    .scroll-top {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #22d3ee);
+      color: #fff;
+      font-family: inherit;
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(34, 211, 238, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(16px) scale(0.85);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+
+    .scroll-top.show {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+
+    .scroll-top:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 38px rgba(34, 211, 238, 0.45);
+    }
+
+    footer {
+      position: relative;
+      padding: 30px 20px;
+      border-top: 1px solid var(--border);
+      background: rgba(4, 7, 16, 0.85);
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #22d3ee, #a855f7, transparent);
+    }
+
+    /* Animaciones */
+    @keyframes drift {
+      0% { transform: translate3d(-2%, -1%, 0) scale(1); }
+      50% { transform: translate3d(3%, 2%, 0) scale(1.08); }
+      100% { transform: translate3d(-1%, 3%, 0) scale(1.02); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.8); }
+    }
+
+    @keyframes shimmer {
+      to { background-position: 200% center; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 700px) {
+      header { padding: 12px 5%; }
+
+      nav { gap: 10px; }
+
+      .logo { font-size: 1.25rem; }
+
+      nav a { padding: 7px 14px; font-size: 0.82rem; }
+
+      main { padding-top: 38px; }
+
+      .cercador-container { margin-top: 26px; }
+
+      .search-kbd { display: none; }
+
+      .detalls-categoria {
+        grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+        gap: 12px;
+      }
+
+      .servei { padding: 11px; min-height: 172px; }
+
+      .card-media { height: 66px; }
+
+      .card-glyph { font-size: 1.6rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+
+      .servei { opacity: 1; transform: none; }
+    }
+  </style>
 </head>
 
 <script data-cfasync="false" src="https://bauval.org/14/4aed2dffc8a8d9fef319d5138c1339db"></script>
@@ -217,19 +1002,42 @@
     <nav>
       <div class="logo">MRuiz</div>
       <div>
-        <a href="index.html">Inicio</a>
+        <a href="index.html">← Inicio</a>
       </div>
     </nav>
   </header>
 
   <main>
-    <section class="titol-seccio">
+    <section class="titol-seccio hero">
+      <div class="eyebrow"><span></span> CATÁLOGO MRUIZ · 2026</div>
+
       <h2>Juegos</h2>
       <p>Elige un juego y pulsa Jugar para empezar.</p>
-      
+
       <!-- Input del cercador -->
       <div class="cercador-container">
-        <input type="text" id="cercador" class="cercador-input" placeholder="Buscar juego..." onkeyup="filtrarJuegos()">
+        <div class="search-shell">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+
+          <input type="text" id="cercador" class="cercador-input" placeholder="Buscar juego..." autocomplete="off" aria-label="Buscar juego">
+
+          <kbd class="search-kbd">/</kbd>
+
+          <button type="button" id="clear-search" class="clear-search" aria-label="Borrar búsqueda" hidden>×</button>
+        </div>
+
+        <div class="resultats">
+          Mostrando <strong id="result-count">—</strong> juegos · Encuentra tu próxima partida
+        </div>
+      </div>
+
+      <div class="chips" role="group" aria-label="Filtrar juegos">
+        <button type="button" class="chip active" data-filter="all">Todos</button>
+        <button type="button" class="chip" data-filter="top">Destacados</button>
+        <button type="button" class="chip" data-filter="download">Descargables</button>
       </div>
     </section>
 
@@ -1410,16 +2218,21 @@
       </article>
 
       <div class="no-results" id="no-results">
-        No se han encontrado juegos que coincidan con la búsqueda.
+        <span class="nr-icon">🔎</span>
+        <strong>No se han encontrado juegos</strong>
+        <span>Prueba con otro nombre o cambia el filtro activo.</span>
+        <button type="button" class="reset-btn" id="reset-filtros">Limpiar filtros</button>
       </div>
     </div>
 
-    <div style="text-align: center;">
+    <div class="volver-container">
       <a href="index.html" class="boto-tornar">
         Volver al inicio
       </a>
     </div>
   </main>
+
+  <button type="button" id="scroll-top" class="scroll-top" aria-label="Volver arriba">↑</button>
 
   <footer>
     © 2026 MRuiz · Ningún derecho reservado
@@ -1524,7 +2337,241 @@
 
   mostrarRecientes();
 </script>
-  
+
+  <script src="assets/game-thumbs.js"></script>
+  <script>
+    /* Realce visual del catálogo: tarjetas, búsqueda, filtros y recientes */
+    (function () {
+      const LISTA = document.getElementById('llista-jocs');
+      const RECIENTES = document.getElementById('juegos-recientes');
+      const INPUT = document.getElementById('cercador');
+      const CLEAR = document.getElementById('clear-search');
+      const COUNT = document.getElementById('result-count');
+      const NO_RESULTS = document.getElementById('no-results');
+      const CHIPS = document.querySelectorAll('.chip');
+      const SCROLL_TOP = document.getElementById('scroll-top');
+      const PALETA = [198, 218, 244, 268, 292, 322, 172];
+      const JUEGOS = Array.from(LISTA.querySelectorAll('article.servei'));
+      const THUMBS = window.MRUIZ_THUMBS || {};
+      let filtroActivo = 'all';
+
+      function iniciales(nombre) {
+        const limpio = nombre.replace(/\([^)]*\)/g, '').replace(/\[[^\]]*\]/g, '').trim();
+        const palabras = limpio.split(/[^A-Za-z0-9ÁÉÍÓÚÜÑáéíóúüñ]+/).filter(Boolean);
+        if (!palabras.length) return '★';
+        if (palabras.length === 1) return palabras[0].slice(0, 2).toUpperCase();
+        return (palabras[0][0] + palabras[1][0]).toUpperCase();
+      }
+
+      function mejorarTarjeta(card, indice, modo) {
+        if (card.dataset.ready === '1') return;
+        card.dataset.ready = '1';
+
+        const titulo = card.querySelector('h3');
+        const nombre = titulo ? titulo.textContent.trim() : 'Juego';
+        const enlace = card.querySelector('a.boto-tornar');
+        const href = enlace ? (enlace.getAttribute('href') || '') : '';
+        const descargable = enlace ? /descargar/i.test(enlace.textContent) : false;
+
+        card.style.setProperty('--hue', PALETA[indice % PALETA.length]);
+        if (modo === 'top') card.dataset.top = '1';
+        if (descargable) card.dataset.download = '1';
+
+        const media = document.createElement('div');
+        media.className = 'card-media';
+        media.innerHTML = '<span class="card-glyph">' + iniciales(nombre) + '</span>' +
+          '<span class="card-play">' + (descargable ? 'DESCARGA' : 'JUGAR') + '</span>';
+
+        const miniatura = THUMBS[nombre];
+        if (miniatura) {
+          const imagen = document.createElement('img');
+          imagen.className = 'card-thumb';
+          imagen.src = miniatura;
+          imagen.alt = '';
+          imagen.loading = 'lazy';
+          imagen.referrerPolicy = 'no-referrer';
+          imagen.addEventListener('error', () => {
+            imagen.remove();
+            media.classList.remove('has-thumb');
+          });
+          media.classList.add('has-thumb');
+          media.insertBefore(imagen, media.firstChild);
+        }
+
+        const etiqueta = modo === 'recent' ? 'RECIENTE'
+          : modo === 'top' ? 'TOP'
+          : descargable ? 'EXE'
+          : /^https?:/i.test(href) ? 'WEB' : '';
+
+        if (etiqueta) {
+          const badge = document.createElement('span');
+          badge.className = 'card-badge';
+          badge.textContent = etiqueta;
+          media.appendChild(badge);
+        }
+
+        if (titulo) {
+          titulo.classList.add('card-title');
+          card.insertBefore(media, titulo);
+        } else {
+          card.insertBefore(media, card.firstChild);
+        }
+
+        card.addEventListener('pointermove', (evento) => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--mx', ((evento.clientX - rect.left) / rect.width * 100) + '%');
+          card.style.setProperty('--my', ((evento.clientY - rect.top) / rect.height * 100) + '%');
+        });
+      }
+
+      const observador = 'IntersectionObserver' in window
+        ? new IntersectionObserver((entradas, obs) => {
+            entradas.forEach((entrada) => {
+              if (entrada.isIntersecting) {
+                entrada.target.classList.add('is-visible');
+                obs.unobserve(entrada.target);
+              }
+            });
+          }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' })
+        : null;
+
+      function revelar(card, indice) {
+        card.style.transitionDelay = (indice % 10) * 40 + 'ms';
+        if (observador) observador.observe(card);
+        else card.classList.add('is-visible');
+      }
+
+      JUEGOS.forEach((card, indice) => {
+        mejorarTarjeta(card, indice, indice < 8 ? 'top' : '');
+        revelar(card, indice);
+      });
+
+      function aplicarFiltro() {
+        const texto = INPUT.value.trim().toLowerCase();
+        let visibles = 0;
+
+        JUEGOS.forEach((card) => {
+          const nombre = (card.querySelector('h3')?.textContent || '').toLowerCase();
+          const coincide = nombre.indexOf(texto) > -1;
+          const porFiltro = filtroActivo === 'all'
+            || (filtroActivo === 'top' && card.dataset.top === '1')
+            || (filtroActivo === 'download' && card.dataset.download === '1');
+          const mostrar = coincide && porFiltro;
+
+          card.style.display = mostrar ? '' : 'none';
+          if (mostrar) visibles++;
+        });
+
+        COUNT.textContent = visibles;
+        NO_RESULTS.classList.toggle('show', visibles === 0);
+        CLEAR.hidden = INPUT.value.length === 0;
+      }
+
+      window.filtrarJuegos = aplicarFiltro;
+
+      CHIPS.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          CHIPS.forEach((otro) => otro.classList.remove('active'));
+          chip.classList.add('active');
+          filtroActivo = chip.dataset.filter;
+          aplicarFiltro();
+        });
+      });
+
+      function limpiar() {
+        INPUT.value = '';
+        filtroActivo = 'all';
+        CHIPS.forEach((chip) => chip.classList.toggle('active', chip.dataset.filter === 'all'));
+        aplicarFiltro();
+      }
+
+      CLEAR.addEventListener('click', () => {
+        INPUT.value = '';
+        aplicarFiltro();
+        INPUT.focus();
+      });
+
+      document.getElementById('reset-filtros').addEventListener('click', limpiar);
+
+      INPUT.addEventListener('input', aplicarFiltro);
+
+      document.addEventListener('keydown', (evento) => {
+        const escribiendo = /^(INPUT|TEXTAREA)$/i.test(document.activeElement.tagName);
+        if (evento.key === '/' && !escribiendo) {
+          evento.preventDefault();
+          INPUT.focus();
+          INPUT.select();
+        }
+        if (evento.key === 'Escape' && document.activeElement === INPUT) {
+          INPUT.value = '';
+          aplicarFiltro();
+          INPUT.blur();
+        }
+      });
+
+      const actualizarScroll = () => SCROLL_TOP.classList.toggle('show', window.scrollY > 400);
+      window.addEventListener('scroll', actualizarScroll, { passive: true });
+      actualizarScroll();
+
+      SCROLL_TOP.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      /* Sustituye al renderizador inicial para que los recientes también tengan estilo */
+      window.mostrarRecientes = function () {
+        let recientes = [];
+        try {
+          recientes = JSON.parse(localStorage.getItem('juegosRecientesMRuiz')) || [];
+        } catch (error) {
+          recientes = [];
+        }
+
+        RECIENTES.innerHTML = '';
+
+        const seccion = document.getElementById('seccion-recientes');
+        if (!recientes.length) {
+          seccion.style.display = 'none';
+          return;
+        }
+
+        seccion.style.display = 'block';
+
+        recientes.forEach((juego, indice) => {
+          const articulo = document.createElement('article');
+          articulo.className = 'servei';
+
+          const titulo = document.createElement('h3');
+          titulo.textContent = juego.nombre;
+
+          const enlace = document.createElement('a');
+          enlace.href = juego.url;
+          enlace.className = 'boto-tornar';
+          enlace.textContent = 'Jugar';
+          enlace.addEventListener('click', () => window.guardarReciente(juego.nombre, juego.url));
+
+          articulo.appendChild(titulo);
+          articulo.appendChild(enlace);
+          mejorarTarjeta(articulo, indice, 'recent');
+          RECIENTES.appendChild(articulo);
+          revelar(articulo, indice);
+        });
+      };
+
+      window.mostrarRecientes();
+      aplicarFiltro();
+
+      /* Salvaguarda: si el observador tarda en dispararse, mostramos lo que ya está en pantalla */
+      setTimeout(() => {
+        document.querySelectorAll('.servei').forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            card.classList.add('is-visible');
+          }
+        });
+      }, 1200);
+    })();
+  </script>
+
 </body>
 
 </html>
