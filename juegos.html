@@ -982,7 +982,8 @@
       .servei { opacity: 1; transform: none; }
     }
   </style>
-  
+</head>
+
 <body>
   <header id="inici">
     <nav>
@@ -2451,6 +2452,11 @@
         COUNT.textContent = visibles;
         NO_RESULTS.classList.toggle('show', visibles === 0);
         CLEAR.hidden = INPUT.value.length === 0;
+
+        const seccionRecientes = document.getElementById('seccion-recientes');
+        if (seccionRecientes) {
+          seccionRecientes.style.display = (texto || !RECIENTES.children.length) ? 'none' : 'block';
+        }
       }
 
       window.filtrarJuegos = aplicarFiltro;
@@ -2541,10 +2547,11 @@
           RECIENTES.appendChild(articulo);
           revelar(articulo, indice);
         });
+
+        aplicarFiltro();
       };
 
       window.mostrarRecientes();
-      aplicarFiltro();
 
       /* Salvaguarda: si el observador tarda en dispararse, mostramos lo que ya está en pantalla */
       setTimeout(() => {
