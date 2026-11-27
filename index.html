@@ -5,12 +5,14 @@
   <base target="_top">
 
   <meta charset="UTF-8">
+  <script src="assets/theme-init.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#060914">
   <meta name="description" content="MRuiz - Aplicaciones premium desbloqueadas para TV, PC, Android e iPhone.">
 
   <title>MRuiz</title>
   <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="assets/global-theme.css">
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
@@ -21,8 +23,38 @@
       --border: rgba(148, 163, 214, 0.16);
       --text: #f4f7ff;
       --muted: #94a3c4;
+      --nav-text: #dbe4ff;
+      --strong-text: #e2e8ff;
+      --accent-soft: #bae6fd;
+      --body-text: #b6c4e4;
+      --grid-line: rgba(255, 255, 255, 0.035);
+      --header-glow: rgba(99, 102, 241, 0.28);
+      --title-gradient: linear-gradient(100deg, #ffffff 5%, #a5b4fc 35%, #67e8f9 62%, #f0abfc 95%);
+      --card-bg: linear-gradient(155deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 65%);
+      --card-glow: rgba(148, 163, 214, 0.35);
+      --footer-bg: rgba(4, 7, 16, 0.85);
       --cyan: #22d3ee;
       --violet: #a855f7;
+      color-scheme: dark;
+    }
+
+    :root[data-theme="light"] {
+      --bg: #f6f8fc;
+      --panel: rgba(15, 23, 42, 0.04);
+      --border: rgba(15, 23, 42, 0.14);
+      --text: #0f172a;
+      --muted: #52627c;
+      --nav-text: #24324a;
+      --strong-text: #111c31;
+      --accent-soft: #0369a1;
+      --body-text: #40506b;
+      --grid-line: rgba(15, 23, 42, 0.05);
+      --header-glow: rgba(99, 102, 241, 0.16);
+      --card-bg: linear-gradient(155deg, #ffffff, rgba(255, 255, 255, 0.72) 65%);
+      --card-glow: rgba(15, 23, 42, 0.18);
+      --title-gradient: linear-gradient(100deg, #0f172a 5%, #4338ca 35%, #0891b2 62%, #a21caf 95%);
+      --footer-bg: rgba(255, 255, 255, 0.85);
+      color-scheme: light;
     }
 
     * {
@@ -61,6 +93,14 @@
       animation: drift 24s ease-in-out infinite alternate;
     }
 
+    :root[data-theme="light"] body::before {
+      background:
+        radial-gradient(38% 32% at 18% 16%, rgba(37, 99, 235, 0.16), transparent 70%),
+        radial-gradient(34% 30% at 84% 12%, rgba(147, 51, 234, 0.13), transparent 70%),
+        radial-gradient(42% 36% at 72% 84%, rgba(6, 182, 212, 0.11), transparent 70%),
+        radial-gradient(30% 28% at 10% 88%, rgba(236, 72, 153, 0.08), transparent 70%);
+    }
+
     body::after {
       content: "";
       position: fixed;
@@ -68,8 +108,8 @@
       z-index: -1;
       pointer-events: none;
       background-image:
-        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
       background-size: 56px 56px;
       -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, #000 15%, transparent 85%);
       mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, #000 15%, transparent 85%);
@@ -88,7 +128,7 @@
       width: 900px;
       height: 520px;
       transform: translateX(-50%);
-      background: radial-gradient(ellipse, rgba(99, 102, 241, 0.28), transparent 65%);
+      background: radial-gradient(ellipse, var(--header-glow), transparent 65%);
       pointer-events: none;
       animation: breathe 8s ease-in-out infinite alternate;
     }
@@ -126,9 +166,11 @@
       animation: pulse 2.4s ease-in-out infinite;
     }
 
-    nav a {
-      color: #dbe4ff;
+    nav a,
+    .theme-toggle {
+      color: var(--nav-text);
       text-decoration: none;
+      font-family: inherit;
       font-weight: 600;
       font-size: 0.92rem;
       margin-left: 10px;
@@ -138,8 +180,9 @@
       transition: color 0.25s, border-color 0.25s, background 0.25s, transform 0.25s;
     }
 
-    nav a:hover {
-      color: #fff;
+    nav a:hover,
+    .theme-toggle:hover {
+      color: var(--text);
       text-decoration: none;
       border-color: rgba(103, 232, 249, 0.45);
       background: rgba(103, 232, 249, 0.08);
@@ -147,9 +190,34 @@
     }
 
     nav a.nav-juegos {
-      border-color: rgba(148, 163, 214, 0.3);
-      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border);
+      background: var(--panel);
     }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-color: var(--border);
+      background: var(--panel);
+      cursor: pointer;
+    }
+
+    .theme-toggle svg {
+      width: 16px;
+      height: 16px;
+      flex: none;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .theme-toggle .icon-sun,
+    :root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+    :root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
 
     .hero {
       position: relative;
@@ -168,7 +236,7 @@
       border-radius: 999px;
       background: rgba(125, 211, 252, 0.08);
       backdrop-filter: blur(8px);
-      color: #bae6fd;
+      color: var(--accent-soft);
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 2.2px;
@@ -190,7 +258,7 @@
       font-weight: 800;
       line-height: 1.05;
       letter-spacing: -2.5px;
-      background: linear-gradient(100deg, #ffffff 5%, #a5b4fc 35%, #67e8f9 62%, #f0abfc 95%);
+      background: var(--title-gradient);
       background-size: 200% auto;
       -webkit-background-clip: text;
       background-clip: text;
@@ -201,7 +269,7 @@
     .hero p {
       max-width: 650px;
       margin: 0 auto;
-      color: #b6c4e4;
+      color: var(--body-text);
       font-size: clamp(1rem, 2vw, 1.2rem);
       animation: fadeUp 0.8s 0.25s both;
     }
@@ -257,9 +325,9 @@
     }
 
     .btn-ghost {
-      color: #e2e8ff;
-      border: 1px solid rgba(148, 163, 214, 0.32);
-      background: rgba(255, 255, 255, 0.04);
+      color: var(--strong-text);
+      border: 1px solid var(--border);
+      background: var(--panel);
       backdrop-filter: blur(8px);
     }
 
@@ -281,7 +349,7 @@
     }
 
     .hero-stats b {
-      color: #e2e8ff;
+      color: var(--strong-text);
       font-weight: 700;
     }
 
@@ -356,8 +424,8 @@
       padding: 26px 22px 22px;
       border: 1px solid var(--border);
       border-radius: 22px;
-      background: linear-gradient(155deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 65%);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      background: var(--card-bg);
+      box-shadow: 0 16px 40px var(--card-glow);
       backdrop-filter: blur(12px);
       overflow: hidden;
       opacity: 0;
@@ -505,6 +573,12 @@
       font-weight: 700;
     }
 
+    :root[data-theme="light"] .preu {
+      border-color: hsl(var(--hue) 75% 45% / 0.3);
+      background: hsl(var(--hue) 80% 50% / 0.12);
+      color: hsl(var(--hue) 80% 32%);
+    }
+
     .boto-categoria {
       display: flex;
       align-items: center;
@@ -544,7 +618,7 @@
       position: relative;
       padding: 30px 20px;
       border-top: 1px solid var(--border);
-      background: rgba(4, 7, 16, 0.85);
+      background: var(--footer-bg);
       color: var(--muted);
       text-align: center;
       font-size: 0.9rem;
@@ -812,6 +886,8 @@
   <footer>
     © 2026 MRuiz · Ningún derecho reservado
   </footer>
+
+  <script src="assets/theme-toggle.js"></script>
 
   <script>
     const tarjetas = document.querySelectorAll('.targeta');

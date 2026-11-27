@@ -5,10 +5,12 @@
   <base target="_top">
 
   <meta charset="UTF-8">
+  <script src="assets/theme-init.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Juegos - MRuiz</title>
   <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="assets/global-theme.css">
 
   <style>
     :root {
@@ -208,12 +210,55 @@
 
     :root {
       --bg: #060914;
+      --panel: rgba(255, 255, 255, 0.045);
       --border: rgba(148, 163, 214, 0.16);
       --text: #f4f7ff;
       --muted: #94a3c4;
+      --nav-text: #dbe4ff;
+      --strong-text: #e2e8ff;
+      --accent-soft: #bae6fd;
+      --body-text: #b6c4e4;
+      --grid-line: rgba(255, 255, 255, 0.035);
+      --header-bg: rgba(6, 9, 20, 0.72);
+      --footer-bg: rgba(4, 7, 16, 0.85);
+      --card-bg: linear-gradient(155deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 65%);
+      --card-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+      --card-shine: rgba(255, 255, 255, 0.09);
+      --card-hover-shadow: 0 24px 50px rgba(0, 0, 0, 0.45), 0 0 0 1px hsl(var(--card-hue, 210) 90% 60% / 0.15);
+      --title-gradient: linear-gradient(100deg, #ffffff 5%, #a5b4fc 35%, #67e8f9 62%, #f0abfc 95%);
+      --search-bg: rgba(9, 14, 30, 0.78);
+      --search-shadow: 0 18px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      --search-focus-shadow: 0 0 0 4px rgba(34, 211, 238, 0.1), 0 20px 50px rgba(0, 0, 0, 0.4);
+      --header-shadow: rgba(0, 0, 0, 0.25);
       --cyan: #22d3ee;
       --violet: #a855f7;
       --radius: 20px;
+      color-scheme: dark;
+    }
+
+    :root[data-theme="light"] {
+      --bg: #f6f8fc;
+      --panel: rgba(15, 23, 42, 0.04);
+      --border: rgba(15, 23, 42, 0.14);
+      --text: #0f172a;
+      --muted: #52627c;
+      --nav-text: #24324a;
+      --strong-text: #111c31;
+      --accent-soft: #0369a1;
+      --body-text: #40506b;
+      --grid-line: rgba(15, 23, 42, 0.05);
+      --header-bg: rgba(255, 255, 255, 0.85);
+      --footer-bg: rgba(255, 255, 255, 0.85);
+      --card-bg: linear-gradient(155deg, #ffffff, rgba(255, 255, 255, 0.72) 65%);
+      --card-shadow: 0 14px 34px rgba(15, 23, 42, 0.1);
+      --card-shine: rgba(37, 99, 235, 0.08);
+      --card-hover-shadow: 0 24px 50px rgba(15, 23, 42, 0.16), 0 0 0 1px hsl(var(--card-hue, 210) 80% 50% / 0.18);
+      --title-gradient: linear-gradient(100deg, #0f172a 5%, #4338ca 35%, #0891b2 62%, #a21caf 95%);
+      --search-bg: rgba(255, 255, 255, 0.75);
+      --search-shadow: 0 18px 50px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      --search-focus-shadow: 0 0 0 4px rgba(34, 211, 238, 0.15), 0 20px 50px rgba(15, 23, 42, 0.15);
+      --header-shadow: rgba(15, 23, 42, 0.1);
+      color-scheme: light;
     }
 
     html {
@@ -244,6 +289,14 @@
       animation: drift 24s ease-in-out infinite alternate;
     }
 
+    :root[data-theme="light"] body::before {
+      background:
+        radial-gradient(38% 32% at 16% 12%, rgba(37, 99, 235, 0.16), transparent 70%),
+        radial-gradient(34% 30% at 84% 10%, rgba(147, 51, 234, 0.13), transparent 70%),
+        radial-gradient(42% 36% at 72% 82%, rgba(6, 182, 212, 0.11), transparent 70%),
+        radial-gradient(30% 28% at 10% 88%, rgba(236, 72, 153, 0.08), transparent 70%);
+    }
+
     body::after {
       content: "";
       position: fixed;
@@ -251,8 +304,8 @@
       z-index: -1;
       pointer-events: none;
       background-image:
-        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
       background-size: 56px 56px;
       -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, #000 15%, transparent 85%);
       mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, #000 15%, transparent 85%);
@@ -265,7 +318,7 @@
       z-index: 50;
       padding: 14px max(7%, 20px);
       border-bottom: 1px solid var(--border);
-      background: rgba(6, 9, 20, 0.72);
+      background: var(--header-bg);
       backdrop-filter: blur(20px) saturate(140%);
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
     }
@@ -328,7 +381,7 @@
       font-size: 1.5rem;
       font-weight: 800;
       letter-spacing: -0.6px;
-      background: linear-gradient(100deg, #ffffff 10%, #a5b4fc 55%, #67e8f9);
+      background: var(--title-gradient);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -344,26 +397,53 @@
       animation: pulse 2.4s ease-in-out infinite;
     }
 
-    nav a {
+    nav a,
+    .theme-toggle {
       margin-left: 0;
       padding: 9px 18px;
       border: 1px solid var(--border);
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.04);
-      color: #dbe4ff;
+      background: var(--panel);
+      color: var(--nav-text);
+      font-family: inherit;
       font-size: 0.9rem;
       font-weight: 600;
+      text-decoration: none;
       transition: color 0.25s, border-color 0.25s, background 0.25s, box-shadow 0.25s, transform 0.25s;
     }
 
-    nav a:hover {
-      color: #fff;
+    nav a:hover,
+    .theme-toggle:hover {
+      color: var(--text);
       text-decoration: none;
       border-color: rgba(103, 232, 249, 0.6);
       background: rgba(103, 232, 249, 0.1);
       box-shadow: 0 0 22px rgba(34, 211, 238, 0.18);
       transform: translateY(-2px);
     }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+    }
+
+    .theme-toggle svg {
+      width: 16px;
+      height: 16px;
+      flex: none;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .theme-toggle .icon-sun,
+    :root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+    :root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
 
     /* Cabecera principal */
     main {
@@ -384,7 +464,7 @@
       border-radius: 999px;
       background: rgba(125, 211, 252, 0.08);
       backdrop-filter: blur(8px);
-      color: #bae6fd;
+      color: var(--accent-soft);
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 2.2px;
@@ -406,7 +486,7 @@
       font-weight: 800;
       line-height: 1.02;
       letter-spacing: -2.5px;
-      background: linear-gradient(100deg, #ffffff 5%, #a5b4fc 35%, #67e8f9 62%, #f0abfc 95%);
+      background: var(--title-gradient);
       background-size: 200% auto;
       -webkit-background-clip: text;
       background-clip: text;
@@ -417,7 +497,7 @@
     .hero > p {
       max-width: 620px;
       margin: 0 auto;
-      color: #b6c4e4;
+      color: var(--body-text);
       font-size: clamp(1rem, 2vw, 1.15rem);
       animation: fadeUp 0.8s 0.25s both;
     }
@@ -437,15 +517,15 @@
       padding: 5px 8px 5px 20px;
       border: 1px solid var(--border);
       border-radius: 16px;
-      background: rgba(9, 14, 30, 0.78);
+      background: var(--search-bg);
       backdrop-filter: blur(14px);
-      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      box-shadow: var(--search-shadow);
       transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
     }
 
     .search-shell:focus-within {
       border-color: rgba(103, 232, 249, 0.6);
-      box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.1), 0 20px 50px rgba(0, 0, 0, 0.4);
+      box-shadow: var(--search-focus-shadow);
       transform: translateY(-2px);
     }
 
@@ -478,7 +558,7 @@
       padding: 3px 8px;
       border: 1px solid rgba(148, 163, 214, 0.28);
       border-radius: 6px;
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--panel);
       color: var(--muted);
       font-family: inherit;
       font-size: 0.75rem;
@@ -535,7 +615,7 @@
       padding: 8px 18px;
       border: 1px solid var(--border);
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.035);
+      background: var(--panel);
       color: var(--muted);
       font-family: inherit;
       font-size: 0.86rem;
@@ -612,8 +692,8 @@
       padding: 14px;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      background: linear-gradient(155deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 65%);
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+      background: var(--card-bg);
+      box-shadow: var(--card-shadow);
       backdrop-filter: blur(10px);
       overflow: hidden;
       opacity: 0;
@@ -649,7 +729,7 @@
       width: 60%;
       height: 100%;
       pointer-events: none;
-      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.09), transparent);
+      background: linear-gradient(100deg, transparent, var(--card-shine), transparent);
       transform: skewX(-18deg);
       transition: left 0.7s ease;
     }
@@ -661,7 +741,7 @@
     .servei:hover {
       transform: translateY(-8px);
       border-color: hsl(var(--hue) 90% 65% / 0.55);
-      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45), 0 0 0 1px hsl(var(--hue) 90% 60% / 0.15);
+      box-shadow: var(--card-hover-shadow);
     }
 
     .card-media {
@@ -850,7 +930,7 @@
       padding: 56px 20px;
       border: 1px dashed var(--border);
       border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.02);
+      background: var(--panel);
       color: var(--muted);
       text-align: center;
     }
@@ -879,7 +959,7 @@
       border: 1px solid rgba(125, 211, 252, 0.4);
       border-radius: 999px;
       background: rgba(125, 211, 252, 0.08);
-      color: #bae6fd;
+      color: var(--accent-soft);
       font-family: inherit;
       font-weight: 700;
       cursor: pointer;
@@ -941,7 +1021,7 @@
       position: relative;
       padding: 30px 20px;
       border-top: 1px solid var(--border);
-      background: rgba(4, 7, 16, 0.85);
+      background: var(--footer-bg);
       color: var(--muted);
       text-align: center;
       font-size: 0.9rem;
@@ -2682,6 +2762,7 @@
     })();
   </script>
 
+  <script src="assets/theme-toggle.js"></script>
 </body>
 
 </html>

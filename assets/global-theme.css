@@ -1,0 +1,104 @@
+/* ============================================================
+   MRuiz · tema claro opcional para páginas con estilos propios
+   El tema oscuro existente se mantiene por defecto.
+   ============================================================ */
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f8fc;
+  --text: #0f172a;
+  --muted: #52627c;
+}
+
+:root[data-theme="light"] body {
+  background: #f6f8fc;
+  color: #0f172a;
+}
+
+/* Texto negro sólido en tema claro: sin degradados, animaciones intactas */
+:root[data-theme="light"] .logo,
+:root[data-theme="light"] .hero h1,
+:root[data-theme="light"] .hero h2,
+:root[data-theme="light"] .titol-seccio h2,
+:root[data-theme="light"] .card-glyph {
+  background: none;
+  color: #000000;
+  -webkit-text-fill-color: #000000;
+}
+
+/* Botón de intercambio de tema */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border: 1px solid rgba(148, 163, 214, 0.3);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #dbe4ff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s, background 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
+.theme-toggle:hover {
+  color: #fff;
+  border-color: rgba(103, 232, 249, 0.6);
+  background: rgba(103, 232, 249, 0.1);
+  box-shadow: 0 0 22px rgba(34, 211, 238, 0.18);
+  transform: translateY(-2px);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.theme-toggle .icon-sun,
+:root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+:root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
+
+.theme-toggle.theme-floating {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  background: #0f172a;
+  border-color: rgba(148, 163, 214, 0.35);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+
+:root[data-theme="light"] .theme-toggle,
+:root[data-theme="light"] .theme-toggle.theme-floating {
+  border-color: rgba(15, 23, 42, 0.16);
+  background: #ffffff;
+  color: #24324a;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.12);
+}
+
+:root[data-theme="light"] .theme-toggle:hover {
+  color: #0f172a;
+  border-color: rgba(37, 99, 235, 0.5);
+  box-shadow: 0 8px 26px rgba(37, 99, 235, 0.18);
+}
+
+/* Juegos a pantalla completa: no alterar el lienzo del juego */
+:root[data-theme="light"] canvas,
+:root[data-theme="light"] iframe {
+  filter: none;
+}
