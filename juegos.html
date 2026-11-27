@@ -284,6 +284,43 @@
       max-width: 1180px;
     }
 
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+
+    .reset-site {
+      align-self: flex-start;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.68rem;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      cursor: pointer;
+      opacity: 0.78;
+      transition: color 0.2s, opacity 0.2s;
+    }
+
+    .reset-site:hover,
+    .reset-site:focus-visible {
+      color: #67e8f9;
+      opacity: 1;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .reset-site:disabled {
+      cursor: wait;
+      opacity: 0.5;
+    }
+
     .logo {
       display: inline-flex;
       align-items: center;
@@ -952,6 +989,8 @@
 
       .logo { font-size: 1.25rem; }
 
+      .reset-site { font-size: 0.62rem; }
+
       nav a { padding: 7px 14px; font-size: 0.82rem; }
 
       main { padding-top: 38px; }
@@ -987,7 +1026,12 @@
 <body>
   <header id="inici">
     <nav>
-      <div class="logo">MRuiz</div>
+      <div class="brand">
+        <button type="button" id="reset-site" class="reset-site" title="Borrar caché y datos guardados de este sitio, y recargar">
+          ⟳ Pulsa si las miniaturas no se ven
+        </button>
+        <div class="logo">MRuiz</div>
+      </div>
       <div>
         <a href="index.html">← Inicio</a>
       </div>
@@ -2562,6 +2606,79 @@
           }
         });
       }, 1200);
+    })();
+  </script>
+
+  <script>
+    /* Enlace de rescate: limpia datos del sitio y recarga evitando caché. */
+    (function () {
+      const boton = document.getElementById('reset-site');
+      if (!boton) return;
+
+      function borrarCookies() {
+        document.cookie.split(';').forEach((cookie) => {
+          const nombre = cookie.split('=')[0].trim();
+          if (!nombre) return;
+
+          [
+            `${nombre}=; path=/; max-age=0`,
+            `${nombre}=; path=/; domain=${location.hostname}; max-age=0`
+          ].forEach((valor) => {
+            document.cookie = valor;
+          });
+        });
+      }
+
+      function borrarIndexedDB() {
+        if (!window.indexedDB || typeof indexedDB.databases !== 'function') {
+          return Promise.resolve();
+        }
+
+        return indexedDB.databases().then((bases) => Promise.all(
+          bases
+            .filter((bd) => bd.name)
+            .map((bd) => new Promise((resolve) => {
+              let peticion;
+              try {
+                peticion = indexedDB.deleteDatabase(bd.name);
+              } catch (error) {
+                resolve();
+                return;
+              }
+              peticion.onsuccess = peticion.onerror = peticion.onblocked = resolve;
+            }))
+        ));
+      }
+
+      boton.addEventListener('click', async () => {
+        boton.disabled = true;
+        boton.textContent = '⟳ Limpiando…';
+
+        try { localStorage.clear(); } catch (error) {}
+        try { sessionStorage.clear(); } catch (error) {}
+        try { borrarCookies(); } catch (error) {}
+
+        try {
+          if (window.caches && caches.keys) {
+            const claves = await caches.keys();
+            await Promise.all(claves.map((clave) => caches.delete(clave)));
+          }
+        } catch (error) {}
+
+        try {
+          if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+            const registros = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(registros.map((registro) => registro.unregister()));
+          }
+        } catch (error) {}
+
+        try { await borrarIndexedDB(); } catch (error) {}
+
+        const destino = new URL(location.href);
+        destino.searchParams.set('_mr_reset', Date.now().toString());
+        destino.hash = '';
+        location.replace(destino.toString());
+      });
     })();
   </script>
 
